@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { StatisticsModule } from './statistics/statistics.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { RegisterModule } from './register/register.module';
+import { UserModule } from './register/users.module';
 
 @Module({
   imports: [
     MongooseModule.forRoot('mongodb://127.0.0.1:27017/statistics'),
     StatisticsModule,
-    // RegisterModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],
