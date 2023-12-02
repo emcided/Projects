@@ -24,24 +24,21 @@ export class UsersService {
 
     const apiKey = new ObjectId().toHexString();
 
-    const opts = {
+    await this.apiKeyModel.create({
       userId: user._id,
       apiKey: apiKey,
-    };
-
-    await this.apiKeyModel.create({
-      userId: new ObjectId('123456789123123456789123'),
-      apiKey: 'random-key',
     });
 
     return apiKey;
   }
 
-  // async identifyUser(apiKey: string) {
-  //   const record = await this.apiKeyModel.findOne({
-  //     apiKey: apiKey,
-  //   });
-  // }
+  async identifyUser(apiKey: string) {
+    const record = await this.apiKeyModel.findOne({
+      apiKey: apiKey,
+    });
+
+    return await this.getUser(record.userId.toHexString())
+  }
 
   async getUser(accountId: string) {
     return this.userModel.findById({
