@@ -20,5 +20,6 @@ import { ApiKey, ApiKeySchema } from './schemas/api-key.schema';
   ],
   controllers: [UsersController],
   providers: [UsersService],
+  exports: [UsersService],
 })
 export class UserModule {}

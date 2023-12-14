@@ -1,6 +1,20 @@
-import { Body, Controller, Get, Param, Post, Injectable } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Req,
+  Query,
+  UseGuards,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CreateAccountDto as CreateUserDto } from './dtos/create-account.dto';
 import { UsersService } from './users.service';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { UserParam } from './user-decorator';
+import { User } from './schemas/user.schema';
 
 @Controller('users')
 export class UsersController {
@@ -11,9 +25,10 @@ export class UsersController {
     return await this.usersService.createUser(dto);
   }
 
-  @Get('/test/:apiKey')
-  async identify(@Param('apiKey') apiKey: string) {
-    return await this.usersService.identifyUser(apiKey);
+  @Get('/me')
+  @UseGuards(AuthGuard)
+  async identify(@UserParam() user: User) {
+    return user;
   }
 
   @Get(':userId')

@@ -5,6 +5,7 @@ import { Model } from 'mongoose';
 import { CreateAccountDto as CreateUserDto } from './dtos/create-account.dto';
 import { User } from './schemas/user.schema';
 import { ApiKey } from './schemas/api-key.schema';
+import { Recoverable } from 'repl';
 
 @Injectable()
 export class UsersService {
@@ -32,12 +33,14 @@ export class UsersService {
     return apiKey;
   }
 
-  async identifyUser(apiKey: string) {
+  async getUserByApiKey(apiKey: string) {
     const record = await this.apiKeyModel.findOne({
       apiKey: apiKey,
     });
 
-    return await this.getUser(record.userId.toHexString())
+    if (!record) return null;
+
+    return await this.getUser(record.userId.toHexString());
   }
 
   async getUser(accountId: string) {

@@ -7,6 +7,7 @@ import {
   StatisticRecord,
   StatisticRecordSchema,
 } from './schemas/statistic-amount.schema';
+import { UserModule } from 'src/users/users.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import {
         schema: StatisticRecordSchema,
       },
     ]),
+    UserModule,
   ],
   providers: [StatisticsService],
   controllers: [StatisticsController],

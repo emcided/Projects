@@ -16,9 +16,13 @@ export class StatisticsService {
     private recordModel: Model<StatisticRecord>,
   ) {}
 
-  async createStatistic(createStatisticDto: CreateStatisticDto) {
+  async createStatistic(
+    createStatisticDto: CreateStatisticDto,
+    userId: ObjectId,
+  ) {
     const stastic = await this.stasticModel.create({
       name: createStatisticDto.name,
+      userId
     });
     return stastic;
   }

@@ -1,16 +1,27 @@
-import { Controller, Post, Get, Body, Param } from '@nestjs/common';
+import { Controller, Post, Get, Body, Param, UseGuards } from '@nestjs/common';
 import { StatisticsService } from './statistics.service';
 import { CreateStatisticDto } from './dtos/create-statistic.dto';
 import { CreateStatisticRecordDto } from './dtos/create-statistic-record.dto';
 import { StatisticRecordsSumInRangeDto } from './dtos/statistic-records-sum-in-range.dto';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { UserParam } from 'src/users/user-decorator';
+import { User } from 'src/users/schemas/user.schema';
+import { userInfo } from 'os';
 
 @Controller('statistics')
 export class StatisticsController {
   constructor(private stasticsService: StatisticsService) {}
 
   @Post('create')
-  async createStastic(@Body() createStatisticDto: CreateStatisticDto) {
-    return await this.stasticsService.createStatistic(createStatisticDto);
+  @UseGuards(AuthGuard)
+  async createStastic(
+    @Body() createStatisticDto: CreateStatisticDto,
+    @UserParam() user: User,
+  ) {
+    return await this.stasticsService.createStatistic(
+      createStatisticDto,
+      user._id,
+    );
   }
 
   @Post(':statisticId/records/create')
